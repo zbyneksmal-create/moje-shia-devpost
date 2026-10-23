@@ -1,0 +1,4 @@
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path');
+const files={'/':['index.html','text/html; charset=utf-8'],'/index.html':['index.html','text/html; charset=utf-8'],'/app.js':['app.js','text/javascript; charset=utf-8'],'/style.css':['style.css','text/css; charset=utf-8'],'/qrcode.min.js':['qrcode.min.js','text/javascript; charset=utf-8']};
+const server=http.createServer((req,res)=>{const entry=files[new URL(req.url,'http://localhost').pathname];if(!entry){res.writeHead(404);res.end('Not found');return;}res.writeHead(200,{'Content-Type':entry[1],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(fs.readFileSync(path.join(__dirname,entry[0])));});
+server.listen(8980,'127.0.0.1',()=>console.log('Competition preview: http://127.0.0.1:8980 (loopback only)'));
